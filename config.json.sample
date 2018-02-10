@@ -2,7 +2,7 @@
   "domoClientId": "1234567890",
   "domoClientSecret": "abc-def-g12-345-678-9",
   "exportFolder": "D:\\DOMOExport\\",
-  "datasetIds": [
+  "datasets": [
     {"name": "Dataset 1", "shortname": "ds1", "id": "96327064-99c7-4480-8335-73a315ad8989"}
   ]
 }
