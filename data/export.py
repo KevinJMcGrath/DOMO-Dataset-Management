@@ -15,10 +15,9 @@ def ExportStreamToCSV(exportPath: str, response_stream):
 
         index = 0
         for row in reader:
-
-            if row[0] == "ClientName":
-                row.append("QuarterStartDate")
-            elif row[7] == "Current":
-                row.append()
-
             writer.writerow(row)
+
+            # if row[0] == "ClientName":
+            #     row.append("QuarterStartDate")
+            # elif row[7] == "Current":
+            #     row.append()
