@@ -1,3 +1,6 @@
+from enum import Enum
+from typing import List
+
 from datetime import datetime
 import utility
 
@@ -25,3 +28,31 @@ class DOMOAuthToken:
 
     def IsExpired(self) -> bool:
         return self.Expires <= datetime.now()
+
+class DOMODataType(Enum):
+    String = 'STRING'
+    Decimal = 'DECIMAL'
+    LongInt = 'LONG'
+    Double = 'DOUBLE'
+    Date = 'DATE'
+    Datetime = 'DATETIME'
+
+
+class DOMODatasetSchema:
+    def __init__(self):
+        self.name: str = ''
+        self.description: str = ''
+        self.rows: int = 0
+        self.schema: List[DOMOSchemaColumn] = []
+
+    def add_column(self, colName: str, colType: DOMODataType = DOMODataType.String):
+        self.schema.append(DOMOSchemaColumn(colName, colType))
+
+
+class DOMOSchemaColumn:
+    def __init__(self, colName: str, colType: DOMODataType = DOMODataType.String):
+        self.type = colType
+        self.name = colName
+
+    def to_json(self):
+        return {"name": self.name, "type": self.type.value}
