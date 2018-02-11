@@ -5,19 +5,6 @@ from datetime import datetime
 import utility
 
 
-class DOMODataset:
-    def __init__(self, dataset_json):
-        self.Name: str = dataset_json['name']
-        self.ShortName: str = dataset_json['shortname']
-        self.Id: str = dataset_json['id']
-
-    def GetExportFilename(self) -> str:
-        return self.ShortName + "_" + datetime.today().strftime("%m%d%Y") + ".csv"
-
-    def ExportData(self):
-        pass
-
-
 class DOMOAuthToken:
     def __init__(self, auth_json):
         self.Token: str = auth_json['access_token']
@@ -28,6 +15,19 @@ class DOMOAuthToken:
 
     def IsExpired(self) -> bool:
         return self.Expires <= datetime.now()
+
+
+class DOMODatasetBookmark:
+    def __init__(self, dataset_json):
+        self.Name: str = dataset_json['name']
+        self.ShortName: str = dataset_json['shortname']
+        self.Id: str = dataset_json['id']
+
+    def GetExportFilename(self) -> str:
+        return self.ShortName + "_" + datetime.today().strftime("%m%d%Y") + ".csv"
+
+    def ExportData(self):
+        pass
 
 
 class DOMODataType(Enum):

@@ -32,7 +32,7 @@ def GetDOMOAuthHeader():
     }
 
 
-def ExportDataSet(dataset: models.DOMODataset):
+def ExportDataSet(dataset: models.DOMODatasetBookmark):
     exportPath = os.path.join(config.ExportDatasetPath, dataset.GetExportFilename())
     endpoint = "https://api.domo.com/v1/datasets/" + dataset.Id + "/data?includeHeader=true&fileName=" + exportPath
 
