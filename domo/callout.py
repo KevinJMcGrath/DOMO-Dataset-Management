@@ -22,20 +22,45 @@ def DomoAuthenticate():
             DOMOAuth = models.DOMOAuthToken(resp_json)
 
 
+def GetDOMOAuthHeader():
+    if DOMOAuth is None or DOMOAuth.IsExpired():
+        DomoAuthenticate()
+
+    return {
+        "Content-Type": "application/json",
+        "Authorization": "bearer " + DOMOAuth.Token
+    }
+
+
 def ExportDataSet(dataset: models.DOMODataset):
     exportPath = os.path.join(config.ExportDatasetPath, dataset.GetExportFilename())
     endpoint = "https://api.domo.com/v1/datasets/" + dataset.Id + "/data?includeHeader=true&fileName=" + exportPath
 
-    reqHeaders = {
-        "Content-Type": "application/json",
-        "Authorization": "bearer " + DOMOAuth.Token
-    }
+    reqHeaders = GetDOMOAuthHeader()
 
     requests.get(endpoint, headers=reqHeaders, stream=True)
 
     print("Export complete.")
 
 
+def CreateDataSet(schema_json):
+    endpoint = "https://api.domo.com/v1/datasets"
+
+    reqHeaders = GetDOMOAuthHeader()
+
+    response = requests.post(endpoint, data=schema_json, headers=reqHeaders)
+
+    print(response.content)
+
+
+def TestSchemaSubmission(schema_json):
+    url = "https://requestb.in/169shwu1"
+
+    head = {"Content-Type": "application/json"}
+
+    response = requests.post(url, data=schema_json, headers=head)
+
+    print(response.content)
 
 
 

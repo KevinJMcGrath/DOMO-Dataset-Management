@@ -29,6 +29,7 @@ class DOMOAuthToken:
     def IsExpired(self) -> bool:
         return self.Expires <= datetime.now()
 
+
 class DOMODataType(Enum):
     String = 'STRING'
     Decimal = 'DECIMAL'
@@ -38,15 +39,23 @@ class DOMODataType(Enum):
     Datetime = 'DATETIME'
 
 
-class DOMODatasetSchema:
+class DOMOSchemaDataset:
     def __init__(self):
         self.name: str = ''
         self.description: str = ''
         self.rows: int = 0
-        self.schema: List[DOMOSchemaColumn] = []
+        self.schema: DOMOSchemaColumnCollection = DOMOSchemaColumnCollection()
 
     def add_column(self, colName: str, colType: DOMODataType = DOMODataType.String):
-        self.schema.append(DOMOSchemaColumn(colName, colType))
+        self.schema.columns.append(DOMOSchemaColumn(colName, colType))
+
+    def ExportJSON(self):
+        return utility.ExportModelToJSON(self)
+
+
+class DOMOSchemaColumnCollection:
+    def __init__(self):
+        self.columns: List[DOMOSchemaColumn] = []
 
 
 class DOMOSchemaColumn:
@@ -55,4 +64,14 @@ class DOMOSchemaColumn:
         self.name = colName
 
     def to_json(self):
-        return {"name": self.name, "type": self.type.value}
+        return {"type": self.type.value, "name": self.name}
+
+
+def CreateDemoData():
+    ds = DOMOSchemaDataset()
+    ds.name = 'Test Dataset'
+    ds.description = 'Testing dataset creation from Python'
+    ds.add_column('col1_name')
+    ds.add_column('col2_name', DOMODataType.LongInt)
+
+    return ds
