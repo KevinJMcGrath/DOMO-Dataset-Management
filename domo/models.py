@@ -57,6 +57,9 @@ class DOMOSchemaColumnCollection:
     def __init__(self):
         self.columns: List[DOMOSchemaColumn] = []
 
+    def add_all(self, col_json):
+        for col in col_json['schema']['columns']:
+            self.columns.append(DOMOSchemaColumn(col['name'], DOMODataType(col['type'])))
 
 class DOMOSchemaColumn:
     def __init__(self, colName: str, colType: DOMODataType = DOMODataType.String):
@@ -65,6 +68,24 @@ class DOMOSchemaColumn:
 
     def to_json(self):
         return {"type": self.type.value, "name": self.name}
+
+
+class DOMOSchemaFullDataset(DOMOSchemaDataset):
+    # I don't *think* I have to explicitly call super().__init__() for the super class
+    # but here's a reminder to do so should the code break.
+    def __init__(self, schema_json):
+        self.id = schema_json['id']
+        self.name = schema_json['name']
+        self.description = schema_json['description']
+        self.rows = schema_json['rows']
+        self.columns = schema_json['columns']
+        self.createdAt = schema_json['createdAt']
+        self.updatedAt = schema_json['updatedAt']
+        self.pdpEnabled = schema_json['pdpEnabled']
+        self.policies = schema_json['policies']
+
+        self.schema = DOMOSchemaColumnCollection()
+        self.schema.add_all(schema_json['schema'])
 
 
 def CreateDemoData():

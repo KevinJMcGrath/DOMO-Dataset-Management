@@ -2,7 +2,7 @@ from typing import List
 
 import config
 import domo.models as models
-
+import domo.callout as call
 
 DatasetCollection: List[models.DOMODatasetBookmark] = []
 
@@ -27,3 +27,7 @@ def GetDatasetByShortname(shortname: str) -> models.DOMODatasetBookmark:
             return None
 
 
+def GetDatasetSchemaFromDOMO(datasetId: str) -> models.DOMOSchemaFullDataset:
+    schema_json = call.RetrieveDataset(datasetId)
+
+    return models.DOMOSchemaFullDataset(schema_json)

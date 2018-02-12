@@ -53,6 +53,16 @@ def CreateDataSet(schema_json):
     print(response.content)
 
 
+def RetrieveDataset(datasetId: str):
+    endpoint = "https://api.domo.com/v1/datasets/" + datasetId
+
+    reqHeaders = GetDOMOAuthHeader()
+
+    response = requests.get(endpoint, headers=reqHeaders)
+
+    return response.content
+
+
 def TestSchemaSubmission(schema_json):
     url = "https://requestb.in/169shwu1"
 
