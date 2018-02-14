@@ -32,15 +32,15 @@ def GetDOMOAuthHeader():
     }
 
 
-def ExportDataSet(dataset: models.DOMODatasetBookmark):
+def StreamDatasetExport(dataset: models.DOMODatasetBookmark) -> requests.Response:
     exportPath = os.path.join(config.ExportDatasetPath, dataset.GetExportFilename())
     endpoint = "https://api.domo.com/v1/datasets/" + dataset.Id + "/data?includeHeader=true&fileName=" + exportPath
 
     reqHeaders = GetDOMOAuthHeader()
 
-    requests.get(endpoint, headers=reqHeaders, stream=True)
+    response = requests.get(endpoint, headers=reqHeaders, stream=True)
 
-    print("Export complete.")
+    return response
 
 
 def CreateDataSet(schema_json):
@@ -60,7 +60,7 @@ def RetrieveDataset(datasetId: str):
 
     response = requests.get(endpoint, headers=reqHeaders)
 
-    return response.content
+    return response.json()
 
 
 def TestSchemaSubmission(schema_json):

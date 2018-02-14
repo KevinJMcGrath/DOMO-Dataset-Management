@@ -13,4 +13,5 @@ DOMOClientSecret = _config['domoClientSecret']
 
 ExportDatasetPath = os.path.abspath(_config['exportFolder'])
 
-DatasetDefinitions = _config['datasets']
+SourceDatasetDefinitions = _config['source_datasets']
+DestDatasetDefinitions = _config['dest_datasets']

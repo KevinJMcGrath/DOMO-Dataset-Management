@@ -1,7 +1,9 @@
 from enum import Enum
 from typing import List
+import os
 
 from datetime import datetime
+import config
 import utility
 
 
@@ -26,8 +28,8 @@ class DOMODatasetBookmark:
     def GetExportFilename(self) -> str:
         return self.ShortName + "_" + datetime.today().strftime("%m%d%Y") + ".csv"
 
-    def ExportData(self):
-        pass
+    def GetExportFullPath(self):
+        return os.path.join(config.ExportDatasetPath, self.GetExportFilename())
 
 
 class DOMODataType(Enum):
@@ -58,7 +60,7 @@ class DOMOSchemaColumnCollection:
         self.columns: List[DOMOSchemaColumn] = []
 
     def add_all(self, col_json):
-        for col in col_json['schema']['columns']:
+        for col in col_json['columns']:
             self.columns.append(DOMOSchemaColumn(col['name'], DOMODataType(col['type'])))
 
 class DOMOSchemaColumn:
